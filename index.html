@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOMMET prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B1442;--ink2:#2A2160;--violet:#5B3FD9;--violet-l:#ECE8FD;--coral:#F26430;--coral-l:#FDE6DC;--gold:#FFC857;--gold-l:#FFF4D6;
+  --ok:#1E9E62;--ok-l:#DDF5E8;--bg:#F1F0FA;--card:#FFFFFF;--text:#1B1442;--muted:#5E5A78;--line:#DAD7EE;--r:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;margin:0;line-height:1.2}
+p{margin:0}
+button,select{font:inherit;cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:2.5px solid var(--coral);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.top{background:var(--ink);color:#fff}
+.top-in{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:700;font-size:22px;letter-spacing:.6px}
+.tagline{color:#B9B3E6;font-size:13px}
+.demo-pill{margin-left:auto;background:var(--ink2);color:var(--gold);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:600;white-space:nowrap}
+.stepper{display:flex;gap:6px;list-style:none;margin:18px 0 0;padding:0;overflow-x:auto}
+.stepper li{flex:1 1 0;min-width:96px}
+.stepper button{width:100%;display:flex;align-items:center;gap:8px;background:transparent;border:0;border-top:3px solid var(--line);padding:8px 2px 4px;color:var(--muted);font-size:13px;font-weight:600;text-align:left}
+.stepper .n{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:var(--ink);font-size:12px;font-weight:700}
+.stepper li.done button{border-top-color:var(--violet);color:var(--violet)}
+.stepper li.done .n{background:var(--violet);color:#fff}
+.stepper li.cur button{border-top-color:var(--coral);color:var(--ink)}
+.stepper li.cur .n{background:var(--coral);color:#fff}
+.stepper button:disabled{cursor:not-allowed;opacity:.55}
+main{padding:20px 0 48px}
+.head{margin-bottom:18px}
+.head h1{font-size:28px}
+.head p{color:var(--muted);margin-top:6px;max-width:760px}
+.grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;align-items:start}
+.cards{display:grid;gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.card.dark .muted{color:#B9B3E6}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.between{justify-content:space-between}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap}
+.b-violet{background:var(--violet-l);color:var(--violet)}
+.b-ok{background:var(--ok-l);color:var(--ok)}
+.b-coral{background:var(--coral-l);color:#B23F14}
+.b-gold{background:var(--gold-l);color:#8A5A00}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:99px;padding:11px 20px;font-weight:600;background:var(--coral);color:#fff}
+.btn:hover{filter:brightness(1.06)}
+.btn.sec{background:var(--violet-l);color:var(--violet)}
+.btn.ghost{background:transparent;color:var(--violet);border:1.5px solid var(--violet)}
+.btn.sm{padding:7px 14px;font-size:14px}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.field{margin-bottom:16px}
+.f{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+input[type=text],select,textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;color:var(--text);background:#fff}
+textarea{resize:vertical;min-height:64px}
+input[type=range]{width:100%;accent-color:var(--coral)}
+.kpi{font-family:'Space Grotesk';font-size:28px;font-weight:700}
+.note{border-radius:12px;padding:12px 14px;font-size:14px}
+.note.violet{background:var(--violet-l)}.note.gold{background:var(--gold-l)}.note.ok{background:var(--ok-l)}
+
+/* mountain */
+.mtn svg{width:100%;height:auto;display:block}
+.alt{font-family:'Space Grotesk';font-size:40px;font-weight:700;color:var(--gold)}
+
+/* blocks */
+.blk{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff}
+.blk.ok{border-color:#9FD9BC}
+.blk.warn{border-color:#F6C3AE}
+.blk h3{font-size:15px;display:flex;align-items:center;gap:8px}
+.blk .num{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--violet);color:#fff;font-size:12px;font-family:'Space Grotesk'}
+.blk.ok .num{background:var(--ok)}
+.blk .hint{font-size:13px;color:var(--muted);margin:4px 0 8px}
+.blk .coach{font-size:13px;margin-top:6px;font-weight:600}
+.blk.ok .coach{color:var(--ok)}
+.blk.warn .coach{color:#B23F14}
+.blocks{display:grid;gap:10px}
+
+/* x10 */
+.x10{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;text-align:center}
+.x10 .arrow{font-family:'Space Grotesk';font-size:28px;font-weight:700;color:var(--coral)}
+.plan li{margin:6px 0}
+.flag{animation:up .6s ease both}
+@keyframes up{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+
+/* pitch */
+.pitch{white-space:pre-line;font-size:16px;line-height:1.6}
+.timer{display:flex;align-items:center;gap:16px}
+.ring{width:92px;height:92px}
+.ring circle{fill:none;stroke-width:9}
+.ring .bgc{stroke:var(--line)}
+.ring .fg{stroke:var(--coral);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+.ring text{font-family:'Space Grotesk';font-weight:700;font-size:22px;fill:var(--ink)}
+.juror{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.juror:last-child{border-bottom:0}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:'Space Grotesk';font-weight:700;color:#fff;background:var(--violet)}
+.score{font-family:'Space Grotesk';font-weight:700;font-size:20px}
+.reveal{animation:up .4s ease both}
+@media (prefers-reduced-motion:reduce){.flag,.reveal{animation:none}}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:0 16px 28px}
+@media (max-width:820px){
+  .grid2{grid-template-columns:1fr}
+  .head h1{font-size:24px}
+  .stepper .lbl{display:none}
+  .stepper li{min-width:44px}
+  .x10{grid-template-columns:1fr}
+  .x10 .arrow{font-size:22px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="top-in">
+      <div class="logo">
+        <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"><path d="M3 34 L15 14 L22 24 L28 12 L37 34 Z" fill="#5B3FD9"/><path d="M28 12 L31 18 L28 16.5 L25.5 18 Z" fill="#fff"/><path d="M28 3 V12" stroke="#fff" stroke-width="1.6"/><path d="M28 3 L34 5.5 L28 8 Z" fill="#F26430"/></svg>
+        SOMMET
+      </div>
+      <span class="tagline">Se lancer, c’est facile. Viser haut, ça s’apprend.</span>
+      <span class="demo-pill">Démo · méthode SPEED STRAT</span>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+  <ol class="stepper" id="stepper" aria-label="Étapes"></ol>
+  <main id="main"></main>
+</div>
+<footer>Prototype SOMMET · équipe CodeBreakers · Le coach et le jury sont simulés ; l’exemple « Pousse » et les fondateurs du mur sont fictifs.</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- les 10 blocs de la méthode (plan du pitch investisseur) ---------- */
+  const BLOCKS = [
+    { id: 'valeur', t: 'Proposition de valeur', hint: 'Pour (client cible) qui (besoin), (ton produit) permet de (bénéfice).', ex: 'Pour les cantines scolaires qui veulent servir des légumes frais, Pousse installe des potagers connectés cultivés par les élèves.', rule: v => /\bpour\b/i.test(v), tip: 'Commence par « Pour (ton client)… » : on doit savoir à qui tu parles.' },
+    { id: 'probleme', t: 'Problème', hint: 'La douleur de ton client, avec un chiffre.', ex: 'Les élèves boudent les légumes et une cantine jette chaque jour des dizaines de portions (chiffre d’exemple).', rule: v => /\d/.test(v), tip: 'Ajoute un chiffre : une douleur se mesure.' },
+    { id: 'solution', t: 'Solution', hint: 'Ce que tu proposes, et pourquoi ça règle le problème.', ex: 'Un potager connecté dans la cour : capteurs, missions pour les classes, et la récolte servie à la cantine.', rule: v => v.length >= 40, tip: 'Décris les éléments clés de ta solution, en une ou deux phrases.' },
+    { id: 'now', t: 'Pourquoi maintenant', hint: 'Le déclencheur récent : une loi, une technologie, un usage.', ex: 'La loi EGalim pousse la restauration collective vers plus de produits durables, et les capteurs coûtent de moins en moins cher.', rule: v => /(loi|nouveau|nouvelle|depuis|aujourd|maintenant|20\d\d|coût|tendance|usage)/i.test(v), tip: 'Donne un déclencheur précis : une loi, une date, une tendance.' },
+    { id: 'marche', t: 'Marché', hint: 'Combien de clients, combien ils paient.', ex: 'Environ 48 000 écoles en France, à 1 500 € par école et par an (estimation d’exemple).', rule: v => /\d/.test(v) && /(€|clients|écoles|entreprises|personnes|M\b|millions)/i.test(v), tip: 'Chiffre ton marché : nombre de clients et ce qu’ils paient.' },
+    { id: 'concu', t: 'Concurrence', hint: 'Qui existe déjà, et pourquoi tu es différent.', ex: 'Les potagers pédagogiques existent, mais sans suivi, sans appli et sans lien avec la cantine.', rule: v => /(mais|sans|contrairement|seul|différen)/i.test(v), tip: 'Dis ce qui te rend différent : « … mais sans… », « contrairement à… ».' },
+    { id: 'produit', t: 'Produit', hint: 'Ce que le client voit et utilise.', ex: 'Des bacs de culture, des capteurs d’humidité et une appli de missions pour chaque classe.', rule: v => v.length >= 30, tip: 'Décris ce que ton client a entre les mains.' },
+    { id: 'bm', t: 'Business model', hint: 'Qui paie, combien, à quelle fréquence.', ex: 'Abonnement de 1 500 € par école et par an, payé par la commune.', rule: v => /€/.test(v), tip: 'Donne un prix en euros : qui paie, combien, quand.' },
+    { id: 'equipe', t: 'Équipe', hint: 'Qui vous êtes, et pourquoi vous allez réussir.', ex: 'Deux fondateurs : une ingénieure agronome et un développeur, déjà 3 écoles testeuses.', rule: v => v.length >= 25, tip: 'Présente les fondateurs et ce qui les rend crédibles.' },
+    { id: 'fin', t: 'Financials', hint: 'Ton objectif chiffré.', ex: '100 écoles la première année, soit 150 000 € de chiffre d’affaires.', rule: v => /\d/.test(v) && /€/.test(v), tip: 'Donne un objectif chiffré en euros.' }
+  ];
+  const SECTORS = ['Alimentation', 'Éducation', 'Santé', 'Mobilité', 'Commerce', 'Tech et logiciel', 'Environnement', 'Autre'];
+  const WALL = [
+    { who: 'Nadia, fondatrice d’une marque de cosmétiques', from: 40000, to: 400000 },
+    { who: 'Yanis, fondateur d’un logiciel pour artisans', from: 80000, to: 800000 },
+    { who: 'Claire et Tom, fondateurs d’une appli de mobilité', from: 25000, to: 250000 }
+  ];
+  const STEPS = ['Diagnostic', 'Sprint SPEED STRAT', 'Ambition ×10', 'Le pitch du soir'];
+
+  /* ---------- état ---------- */
+  const KEY = 'sommet-demo';
+  const fresh = () => ({ step: 1, project: '', sector: 'Éducation', goal1: 50000, goal5: 300000, diagDone: false, blocks: {}, x10: null, pitchDone: false });
+  let S = fresh();
+  try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch (e) { /* stockage indisponible */ }
+  let timer = null, t0 = 0, elapsed = 0;
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } };
+  const $ = s => document.querySelector(s);
+  const esc = t => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const eur = n => n.toLocaleString('fr-FR') + ' €';
+  const keur = n => n >= 1e6 ? (n / 1e6).toLocaleString('fr-FR', { maximumFractionDigits: 1 }) + ' M€' : Math.round(n / 1000).toLocaleString('fr-FR') + ' k€';
+  const val = id => (S.blocks[id] || '').trim();
+  const valid = b => val(b.id).length >= 10 && b.rule(val(b.id));
+  const filled = () => BLOCKS.filter(b => val(b.id).length >= 10).length;
+  const validCount = () => BLOCKS.filter(valid).length;
+  const altitude = () => Math.round(validCount() / BLOCKS.length * 100);
+  const maxStep = () => !S.diagDone ? 1 : filled() < BLOCKS.length ? 2 : S.x10 === null ? 3 : 4;
+  const name = () => S.project.trim() || 'ton projet';
+
+  /* ---------- montagne ---------- */
+  function mountain(pct) {
+    return '<svg viewBox="0 -14 300 204" role="img" aria-label="Altitude : ' + pct + ' %">' +
+      '<path d="M0 190 L80 90 L120 130 L170 20 L235 110 L265 80 L300 120 L300 190 Z" fill="#2A2160"/>' +
+      '<path d="M170 20 L186 55 L172 48 L160 60 L157 48 Z" fill="#fff" opacity=".9"/>' +
+      '<path id="trail" d="M30 182 C70 170 70 150 105 140 S150 120 135 95 S170 70 160 52 S172 30 170 22" fill="none" stroke="#FFC857" stroke-width="2" stroke-dasharray="4 5" opacity=".8"/>' +
+      (pct >= 100 ? '<g class="flag"><path d="M170 22 V-2" stroke="#fff" stroke-width="2"/><path d="M170 -2 L188 4 L170 10 Z" fill="#F26430"/></g>' : '') +
+      '<circle id="climber" r="7" fill="#F26430" stroke="#fff" stroke-width="2"/></svg>';
+  }
+  function placeClimber(pct) {
+    const path = document.getElementById('trail'), c = document.getElementById('climber');
+    if (!path || !c) return;
+    const p = path.getPointAtLength(path.getTotalLength() * Math.min(1, pct / 100));
+    c.setAttribute('cx', p.x); c.setAttribute('cy', p.y);
+  }
+
+  /* ---------- rendu ---------- */
+  function renderStepper() {
+    const m = maxStep();
+    $('#stepper').innerHTML = STEPS.map((l, i) => {
+      const n = i + 1, cls = n === S.step ? 'cur' : n < m ? 'done' : '';
+      return '<li class="' + cls + '"><button type="button" data-go="' + n + '"' + (n > m ? ' disabled' : '') + ' aria-label="Étape ' + n + ' : ' + l + '"' + (n === S.step ? ' aria-current="step"' : '') + '><span class="n">' + n + '</span><span class="lbl">' + l + '</span></button></li>';
+    }).join('');
+  }
+  function render() {
+    if (timer) { clearInterval(timer); timer = null; }
+    if (S.step > maxStep()) S.step = maxStep();
+    renderStepper();
+    $('#main').innerHTML = [null, vDiag, vSprint, vX10, vPitch][S.step]();
+    if (S.step === 2 || S.step === 1) placeClimber(S.step === 1 ? 0 : altitude());
+    save();
+  }
+  function go(n) { S.step = n; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+  function vDiag() {
+    return '<div class="head"><h1>Où vises-tu ?</h1><p>Avant le sprint, le diagnostic d’ambition : ton projet, et ton objectif à 1 an et à 5 ans. Le sprint SPEED STRAT t’emmènera jusqu’au sommet : un pitch prêt pour les investisseurs.</p></div>' +
+      '<div class="grid2"><div class="card">' +
+      '<div class="field"><label class="f" for="project">Nom de ton projet</label><input type="text" id="project" maxlength="40" value="' + esc(S.project) + '" placeholder="Par exemple : Pousse" autocomplete="off"></div>' +
+      '<div class="field"><label class="f" for="sector">Secteur</label><select id="sector">' + SECTORS.map(x => '<option' + (x === S.sector ? ' selected' : '') + '>' + x + '</option>').join('') + '</select></div>' +
+      '<div class="field"><label class="f" for="goal1">Chiffre d’affaires visé dans 1 an : <span id="g1">' + eur(S.goal1) + '</span></label><input type="range" id="goal1" min="10000" max="500000" step="10000" value="' + S.goal1 + '"></div>' +
+      '<div class="field"><label class="f" for="goal5">Chiffre d’affaires visé dans 5 ans : <span id="g5">' + eur(S.goal5) + '</span></label><input type="range" id="goal5" min="50000" max="5000000" step="50000" value="' + S.goal5 + '"></div>' +
+      '<div class="row"><button class="btn" type="button" id="start"' + (S.project.trim() ? '' : ' disabled') + '>Commencer le sprint</button><button class="btn ghost" type="button" id="example">Utiliser l’exemple « Pousse »</button></div></div>' +
+      '<div class="cards"><div class="card dark mtn"><p class="small muted">Ton altitude</p><div class="alt">0 %</div>' + mountain(0) + '<p class="small muted">Chaque bloc validé par le coach te fait monter de 10 %.</p></div>' +
+      '<div class="note violet"><strong>La méthode SPEED STRAT</strong> : les 10 blocs du pitch investisseur, de la proposition de valeur aux financials, en une journée.</div></div></div>';
+  }
+
+  function vSprint() {
+    const alt = altitude(), list = BLOCKS.map((b, i) => {
+      const v = val(b.id), ok = valid(b), st = v.length < 10 ? '' : ok ? 'ok' : 'warn';
+      return '<div class="blk ' + st + '"><h3><span class="num">' + (ok ? '✓' : i + 1) + '</span>' + b.t + '</h3><p class="hint">' + esc(b.hint) + '</p>' +
+        '<textarea data-blk="' + b.id + '" rows="2" aria-label="' + b.t + '">' + esc(v) + '</textarea>' +
+        '<p class="coach" id="coach-' + b.id + '">' + (st === 'ok' ? 'Coach : validé, tu montes de 10 %.' : st === 'warn' ? 'Coach : ' + esc(b.tip) : '') + '</p></div>';
+    }).join('');
+    return '<div class="head"><h1>Le sprint SPEED STRAT de ' + esc(name()) + '</h1><p>Remplis les 10 blocs. Le coach (simulé) vérifie chacun : un chiffre ici, un prix là. Chaque bloc validé te rapproche du sommet.</p></div>' +
+      '<div class="grid2"><div><div class="row" style="margin-bottom:12px"><button class="btn ghost sm" type="button" id="fill">Remplir avec l’exemple « Pousse »</button></div><div class="blocks">' + list + '</div></div>' +
+      '<div class="cards" style="position:sticky;top:12px"><div class="card dark mtn"><p class="small muted">Ton altitude</p><div class="alt" id="alt">' + alt + ' %</div>' + mountain(alt) +
+      '<p class="small muted" id="alt-txt">' + validCount() + ' bloc' + (validCount() > 1 ? 's' : '') + ' validé' + (validCount() > 1 ? 's' : '') + ' sur 10</p></div>' +
+      '<button class="btn" type="button" data-go="3" id="to-x10"' + (filled() < BLOCKS.length ? ' disabled' : '') + '>Passer à l’ambition ×10</button>' +
+      '<p class="small muted">Il faut avoir rempli les 10 blocs pour continuer.</p></div></div>';
+  }
+
+  function vX10() {
+    const g = S.goal1, g10 = g * 10, chosen = S.x10;
+    return '<div class="head"><h1>Et si tu visais 10 fois plus haut ?</h1><p>Le coach reprend ton objectif et le multiplie par 10. Pas pour rêver : pour chercher le plan qui y mène.</p></div>' +
+      '<div class="grid2"><div class="cards"><div class="card"><div class="x10"><div><p class="small muted">Ton objectif à 1 an</p><div class="kpi">' + keur(g) + '</div></div><div class="arrow" aria-hidden="true">×10 →</div><div><p class="small muted">L’objectif SOMMET</p><div class="kpi" style="color:var(--coral)">' + keur(g10) + '</div></div></div></div>' +
+      '<div class="card"><h3 style="font-size:17px;margin-bottom:8px">3 leviers pour y arriver (rédigés par le coach, simulé)</h3><ol class="plan">' +
+      '<li><strong>Plus de clients :</strong> ' + esc(val('marche') ? 'ton marché le permet. Relis-le : « ' + val('marche').slice(0, 90) + (val('marche').length > 90 ? '…' : '') + ' »' : 'élargis ta cible au-delà des premiers clients.') + '</li>' +
+      '<li><strong>Un meilleur prix :</strong> ' + esc(val('bm') ? 'ajoute une offre premium à ton modèle : « ' + val('bm').slice(0, 70) + (val('bm').length > 70 ? '…' : '') + ' »' : 'teste une offre premium.') + '</li>' +
+      '<li><strong>Un canal qui passe à l’échelle :</strong> un partenaire qui vend pour toi (réseau, distributeur, collectivité).</li></ol>' +
+      '<h3 style="font-size:17px;margin:14px 0 8px">Ton plan à 90 jours</h3><ol class="plan"><li><strong>J30 :</strong> 10 clients interrogés, offre premium testée.</li><li><strong>J60 :</strong> 1 partenaire de distribution signé.</li><li><strong>J90 :</strong> le pitch devant 5 investisseurs.</li></ol></div></div>' +
+      '<div class="cards"><div class="card dark"><p class="small muted">Ta décision</p>' +
+      (chosen === true ? '<p class="flag" style="font-family:\'Space Grotesk\';font-size:22px;font-weight:700;color:#FFC857;margin:6px 0">Drapeau planté : tu vises ' + keur(g10) + ' !</p>' :
+        chosen === false ? '<p style="margin:6px 0">Tu gardes ' + keur(g) + '. Le coach te le reproposera après ton pitch.</p>' :
+          '<p style="margin:6px 0 12px">Tu relèves le défi ?</p><div class="row"><button class="btn" type="button" id="accept">Je vise ×10</button><button class="btn ghost" type="button" id="decline" style="color:#fff;border-color:#fff">Je garde mon objectif</button></div>') +
+      '</div>' + (chosen !== null ? '<button class="btn" type="button" data-go="4">Préparer le pitch du soir</button>' : '') +
+      '<div class="card"><h3 style="font-size:16px;margin-bottom:8px">Le mur des sommets (exemples fictifs)</h3>' + WALL.map(w => '<div class="row between small" style="padding:6px 0;border-bottom:1px dashed var(--line)"><span>' + esc(w.who) + '</span><strong>' + keur(w.from) + ' → ' + keur(w.to) + '</strong></div>').join('') + '</div></div></div>';
+  }
+
+  function pitchText() {
+    const g = S.x10 ? S.goal1 * 10 : S.goal1;
+    return [val('valeur'), 'Le problème : ' + val('probleme'), 'Notre solution : ' + val('solution'), 'Pourquoi maintenant ? ' + val('now'), 'Le marché : ' + val('marche'), 'Notre modèle : ' + val('bm'), val('equipe'), 'Notre ambition : ' + keur(g) + ' de chiffre d’affaires dans un an. Merci !']
+      .map(t => t.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n\n');
+  }
+  function vPitch() {
+    const txt = pitchText(), words = txt.split(/\s+/).length, secs = Math.round(words / 2.5);
+    const numbers = (txt.match(/\d+/g) || []).length;
+    const jury = [
+      { who: 'Investisseuse, fonds d’amorçage', ini: 'IF', score: Math.min(10, 5 + (S.x10 ? 3 : 0) + Math.min(2, numbers > 4 ? 2 : 1)), c: S.x10 ? 'Une vraie ambition, et un plan pour la tenir.' : 'Solide, mais je veux voir plus grand.' },
+      { who: 'Business angel', ini: 'BA', score: Math.min(10, 4 + Math.round(altitude() / 20)), c: altitude() >= 80 ? 'Chaque bloc est chiffré : on comprend tout de suite.' : 'Il manque des chiffres dans certains blocs.' },
+      { who: 'Directrice d’incubateur', ini: 'DI', score: secs <= 60 ? 9 : secs <= 75 ? 7 : 5, c: secs <= 60 ? 'Pile dans la minute, c’est rare !' : 'Un peu long : coupe pour tenir la minute.' }
+    ];
+    return '<div class="head"><h1>Le pitch du soir</h1><p>Ton pitch d’une minute, assemblé à partir de tes blocs. Lance le chrono et entraîne-toi : le jury (simulé) réagit.</p></div>' +
+      '<div class="grid2"><div class="card"><div class="row between" style="margin-bottom:10px"><span class="badge b-violet">Pitch de ' + esc(name()) + '</span><span class="small muted">' + words + ' mots · environ ' + secs + ' s à l’oral</span></div><div class="pitch">' + esc(txt) + '</div></div>' +
+      '<div class="cards"><div class="card"><div class="timer"><svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="bgc" cx="50" cy="50" r="42"/><circle class="fg" id="ring" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/><text id="ring-t" x="50" y="58" text-anchor="middle">60</text></svg>' +
+      '<div><p class="small muted">Chrono d’entraînement</p><div class="row" style="margin-top:6px"><button class="btn sm" type="button" id="go-timer">Lancer 60 s</button><button class="btn ghost sm" type="button" id="reset-timer">Remettre à zéro</button></div></div></div></div>' +
+      '<div class="card"><h3 style="font-size:16px;margin-bottom:4px">Le jury (simulé)</h3>' + jury.map(j => '<div class="juror reveal"><div class="av">' + j.ini + '</div><div><strong class="small">' + j.who + '</strong><div class="small muted">« ' + esc(j.c) + ' »</div></div><div class="score">' + j.score + '/10</div></div>').join('') + '</div>' +
+      '<button class="btn ghost" type="button" id="restart">Recommencer avec un autre projet</button></div></div>';
+  }
+
+  /* ---------- chrono ---------- */
+  function tick() {
+    const left = Math.max(0, 60 - (elapsed + (timer ? (Date.now() - t0) / 1000 : 0)));
+    const ring = $('#ring'), tt = $('#ring-t');
+    if (ring) ring.setAttribute('stroke-dashoffset', String(263.9 * left / 60));
+    if (tt) tt.textContent = Math.ceil(left);
+    if (left <= 0 && timer) { clearInterval(timer); timer = null; elapsed = 60; const b = $('#go-timer'); if (b) b.textContent = 'Temps écoulé'; }
+  }
+
+  /* ---------- interactions ---------- */
+  function fillExample() { BLOCKS.forEach(b => { S.blocks[b.id] = b.ex; }); }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('button');
+    if (!t || t.disabled) return;
+    if (t.dataset.go) return go(+t.dataset.go);
+    switch (t.id) {
+      case 'example': S.project = 'Pousse'; S.sector = 'Éducation'; S.goal1 = 50000; S.goal5 = 1000000; S.diagDone = true; return go(2);
+      case 'start': S.diagDone = true; return go(2);
+      case 'fill': fillExample(); return render();
+      case 'accept': S.x10 = true; return render();
+      case 'decline': S.x10 = false; return render();
+      case 'go-timer':
+        if (timer) { elapsed += (Date.now() - t0) / 1000; clearInterval(timer); timer = null; t.textContent = 'Reprendre'; }
+        else if (elapsed < 60) { t0 = Date.now(); timer = setInterval(tick, 200); t.textContent = 'Pause'; }
+        return tick();
+      case 'reset-timer': if (timer) { clearInterval(timer); timer = null; } elapsed = 0; { const b = $('#go-timer'); if (b) b.textContent = 'Lancer 60 s'; } return tick();
+      case 'restart': S = fresh(); elapsed = 0; return go(1);
+    }
+  });
+  document.addEventListener('input', e => {
+    const t = e.target;
+    if (t.id === 'project') { S.project = t.value; const b = $('#start'); if (b) b.disabled = !t.value.trim(); save(); return; }
+    if (t.id === 'goal1') { S.goal1 = +t.value; $('#g1').textContent = eur(S.goal1); save(); return; }
+    if (t.id === 'goal5') { S.goal5 = +t.value; $('#g5').textContent = eur(S.goal5); save(); return; }
+    if (t.dataset && t.dataset.blk) {
+      S.blocks[t.dataset.blk] = t.value; save();
+      const b = BLOCKS.find(x => x.id === t.dataset.blk), box = t.closest('.blk'), v = t.value.trim(), ok = valid(b);
+      box.className = 'blk ' + (v.length < 10 ? '' : ok ? 'ok' : 'warn');
+      box.querySelector('.num').textContent = ok ? '✓' : BLOCKS.indexOf(b) + 1;
+      $('#coach-' + b.id).textContent = v.length < 10 ? '' : ok ? 'Coach : validé, tu montes de 10 %.' : 'Coach : ' + b.tip;
+      const alt = altitude(); $('#alt').textContent = alt + ' %'; $('#alt-txt').textContent = validCount() + ' bloc' + (validCount() > 1 ? 's' : '') + ' validé' + (validCount() > 1 ? 's' : '') + ' sur 10';
+      const svg = document.querySelector('.mtn svg'); if (svg) svg.outerHTML = mountain(alt);
+      placeClimber(alt); $('#to-x10').disabled = filled() < BLOCKS.length; renderStepper();
+    }
+  });
+  document.addEventListener('change', e => { if (e.target.id === 'sector') { S.sector = e.target.value; save(); } });
+  render();
+})();
+</script>
+</body>
+</html>
